@@ -1,83 +1,61 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
 class ProductManager {
-  constructor(filePath) {
-    this.path = filePath;
-    this.initFile();
+  constructor() {
+    this.patch = './data/data.json';
+    this.products = [];
+  }
+  static id = 0;
+
+  async addProduct(title, description, price, thumbnails, code, stock) {
+    ProductManager.id++;
+    let newProduct = {
+      title,
+      description,
+      price,
+      thumbnails,
+      code,
+      stock,
+      id: ProductManager.id,
+    };
+
+    this.products.push(newProduct);
+    await fs.writeFile(this.patch, JSON.stringify(this.products));
   }
 
-  initFile() {
-    if (!fs.existsSync(this.path)) {
-      fs.writeFileSync(this.path, JSON.stringify([]));
+  async getProducts() {
+    let respuesta = await fs.readFile(this.patch, 'utf-8');
+    return console.log(JSON.parse(respuesta));
+  }
+
+  async getProductsById(id) {
+    let respuesta = await fs.readFile(this.patch, 'utf-8');
+    const products = JSON.parse(respuesta);
+    const productFound = products.find((product) => product.id === id);
+
+    if (!productFound) {
+      console.log('No existe el producto');
+    } else {
+      console.log(productFound);
     }
   }
 
-  addProduct(product) {
-    try {
-      const products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-      product.id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-      product.stock = product.stock || 0;
-      products.push(product);
-      fs.writeFileSync(this.path, JSON.stringify(products));
-      return product.id;
-    } catch (error) {
-      return 'addProduct: error';
-    }
+  async deleteProduct(id) {
+    let respuesta = await fs.readFile(this.patch, 'utf-8');
+    const products = JSON.parse(respuesta);
+    const updatedProducts = products.filter((product) => product.id !== id);
+
+    await fs.writeFile(this.patch, JSON.stringify(updatedProducts));
+    console.log('Producto eliminado');
   }
 
-  getProducts() {
-    try {
-      const products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-      if (products.length === 0) {
-        return 'Not found';
-      }
-      return products;
-    } catch (error) {
-      return 'getProducts: error';
-    }
-  }
+  async updateProducts({ id, ...producto }) {
+    await this.deleteProduct(id);
+    let respuesta = await fs.readFile(this.patch, 'utf-8');
+    const products = JSON.parse(respuesta);
+    const updatedProducts = [{ ...producto, id }, ...products];
 
-  getProductById(id) {
-    try {
-      const products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-      const product = products.find((product) => product.id === id);
-      if (!product) {
-        return 'Not found';
-      }
-      return product;
-    } catch (error) {
-      return 'getProductById: error';
-    }
-  }
-
-  updateProduct(id, data) {
-    try {
-      const products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-      const index = products.findIndex((product) => product.id === id);
-      if (index === -1) {
-        return 'Not found';
-      }
-      products[index] = { ...products[index], ...data };
-      fs.writeFileSync(this.path, JSON.stringify(products));
-      return 'updateProduct: done';
-    } catch (error) {
-      return 'updateProduct: error';
-    }
-  }
-
-  deleteProduct(id) {
-    try {
-      const products = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-      const index = products.findIndex((product) => product.id === id);
-      if (index === -1) {
-        return 'Not found';
-      }
-      products.splice(index, 1);
-      fs.writeFileSync(this.path, JSON.stringify(products));
-      return 'deleteProduct: done';
-    } catch (error) {
-      return 'deleteProduct: error';
-    }
+    await fs.writeFile(this.patch, JSON.stringify(updatedProducts));
   }
 }
 
