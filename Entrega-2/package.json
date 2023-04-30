@@ -1,3 +1,14 @@
-{
-	"type": "module"
-}
+	{
+		
+		"name": "product-manager",
+		"version": "1.0.0",
+		"description": "Un simple gestor de productos usando archivos para almacenamiento",
+		"main": "product-manager.js",
+		"scripts": {
+			"start": "node script.js"
+		},
+		"author": "Tu Nombre",
+		"license": "MIT",
+		"dependencies": {},
+		"devDependencies": {}
+	}
