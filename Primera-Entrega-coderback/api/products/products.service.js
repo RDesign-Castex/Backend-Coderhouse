@@ -10,7 +10,15 @@ const getProducts = () => {
 
 const getProductById = (id) => {
   const products = getProducts();
-  return products.find((product) => product.id === id);
+  return products.find((product) => String(product.id) === String(id));
+};
+
+const generateId = (products) => {
+  if (products.length === 0) {
+    return 1;
+  }
+  const maxId = products.reduce((max, product) => Math.max(max, product.id), 0);
+  return maxId + 1;
 };
 
 const createProduct = (newProduct) => {
@@ -23,39 +31,38 @@ const createProduct = (newProduct) => {
 
 const updateProduct = (id, updatedProductData) => {
   const products = getProducts();
-  const productIndex = products.findIndex((product) => product.id === id);
-if (productIndex === -1) {
-	return null;
-}
+  const productIndex = products.findIndex(
+    (product) => String(product.id) === String(id)
+  );
+  if (productIndex === -1) {
+    return null;
+  }
 
-const updatedProduct = { ...products[productIndex], ...updatedProductData };
-products[productIndex] = updatedProduct;
-fs.writeFileSync(productsFilePath, JSON.stringify(products));
-return updatedProduct;
+  const updatedProduct = { ...products[productIndex], ...updatedProductData };
+  products[productIndex] = updatedProduct;
+  fs.writeFileSync(productsFilePath, JSON.stringify(products));
+  return updatedProduct;
 };
 
-const deleteProduct = (id) => {
-const products = getProducts();
-const productIndex = products.findIndex((product) => product.id === id);
+const deleteProduct = (productId) => {
+  const products = getProducts();
+  const productIndex = products.findIndex(
+    (product) => String(product.id) === String(productId)
+  );
 
-if (productIndex === -1) {
-	return null;
-}
+  if (productIndex === -1) {
+    return null;
+  }
 
-const deletedProduct = products.splice(productIndex, 1);
-fs.writeFileSync(productsFilePath, JSON.stringify(products));
-return deletedProduct;
-};
-
-const generateId = (products) => {
-const maxId = products.reduce((max, product) => (product.id > max ? product.id : max), 0);
-return maxId + 1;
+  products.splice(productIndex, 1);
+  fs.writeFileSync(productsFilePath, JSON.stringify(products));
+  return true;
 };
 
 module.exports = {
-getProducts,
-getProductById,
-createProduct,
-updateProduct,
-deleteProduct,
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };

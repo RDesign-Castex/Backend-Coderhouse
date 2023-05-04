@@ -10,7 +10,9 @@ exports.getProductById = (req, res) => {
   const product = productsService.getProductById(productId);
 
   if (!product) {
-    return res.status(400).send({ status: "error", error: "Product not found" });
+    return res
+      .status(400)
+      .send({ status: "error", error: "Product not found" });
   }
   res.send({ status: "success", payload: product });
 };
@@ -20,7 +22,9 @@ exports.createProduct = (req, res) => {
   const createdProduct = productsService.createProduct(newProduct);
 
   if (!createdProduct) {
-    return res.status(400).send({ status: "error", error: "Product creation failed" });
+    return res
+      .status(400)
+      .send({ status: "error", error: "Product creation failed" });
   }
   res.send({ status: "success", payload: createdProduct });
 };
@@ -28,10 +32,15 @@ exports.createProduct = (req, res) => {
 exports.updateProduct = (req, res) => {
   const productId = req.params.pid;
   const updatedProductData = req.body;
-  const updatedProduct = productsService.updateProduct(productId, updatedProductData);
+  const updatedProduct = productsService.updateProduct(
+    productId,
+    updatedProductData
+  );
 
   if (!updatedProduct) {
-    return res.status(400).send({ status: "error", error: "Product update failed" });
+    return res
+      .status(400)
+      .send({ status: "error", error: "Product update failed" });
   }
   res.send({ status: "success", payload: updatedProduct });
 };
@@ -41,7 +50,10 @@ exports.deleteProduct = (req, res) => {
   const deletedProduct = productsService.deleteProduct(productId);
 
   if (!deletedProduct) {
-    return res.status(400).send({ status: "error", error: "Product deletion failed" });
+    return res
+      .status(404)
+      .json({ status: "error", error: "Producto no encontrado." });
   }
-  res.send({ status: "success", payload: deletedProduct });
+
+  res.json({ status: "success", message: "Producto eliminado correctamente." });
 };
