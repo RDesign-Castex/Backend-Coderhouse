@@ -1,13 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/carts');
 
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/products', productRoutes);

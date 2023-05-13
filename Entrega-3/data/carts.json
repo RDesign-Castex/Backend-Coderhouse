@@ -1,0 +1,35 @@
+[
+  {
+    "userId": "123"
+  },
+  {
+    "userId": "your_user_id"
+  },
+  {
+    "userId": "1"
+  },
+  {
+    "userId": "rene"
+  },
+  {
+    "userId": "user123"
+  },
+  {
+    "id": "2",
+    "userId": "user123",
+    "products": "nuevo",
+    "price": "1000",
+    "stock": "10",
+    "code": "#",
+    "thumbnail": "imagen rene"
+  },
+  {
+    "id": "1",
+    "userId": "user123",
+    "products": "nuevo",
+    "price": "1000",
+    "stock": "10",
+    "code": "#",
+    "thumbnail": "imagen rene"
+  }
+]

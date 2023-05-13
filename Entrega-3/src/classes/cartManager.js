@@ -7,7 +7,8 @@ class CartManager {
 
   readCartsFile() {
     try {
-      return JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+      const fileContent = fs.readFileSync(this.path, 'utf-8');
+      return JSON.parse(fileContent) || [];
     } catch (err) {
       throw new Error('Error reading the file');
     }
@@ -23,45 +24,50 @@ class CartManager {
 
   validateCart(cart) {
     // Add your own validation logic here
-    if (!cart) {
+    if (!cart || typeof cart !== 'object') {
       throw new Error('Invalid cart data');
     }
+  }
+
+  getCartById(id) {
+    const carts = this.readCartsFile();
+    const cart = carts.find(cart => cart.id === id.toString());
+    if (!cart) {
+      throw new Error('Cart not found');
+    }
+    return cart;
   }
 
   addToCart(cart) {
     this.validateCart(cart);
     const carts = this.readCartsFile();
-    carts.push(cart);
+    const newCart = { id: Date.now().toString(), ...cart };
+    carts.push(newCart);
     this.writeCartsFile(carts);
-    return cart;
-  }
-
-  getCarts() {
-    return this.readCartsFile();
+    return newCart;
   }
 
   updateCart(id, updatedCart) {
     this.validateCart(updatedCart);
-    let carts = this.readCartsFile();
-    const index = carts.findIndex(cart => cart.id === id);
+    const carts = this.readCartsFile();
+    const index = carts.findIndex(cart => cart.id === id.toString());
     if (index === -1) {
       throw new Error('Cart not found');
     }
-    updatedCart.id = id;
-    carts[index] = updatedCart;
+    const updated = { id: id.toString(), ...updatedCart };
+    carts[index] = updated;
     this.writeCartsFile(carts);
-    return updatedCart;
+    return updated;
   }
 
-  deleteFromCart(id) {
-    let carts = this.readCartsFile();
-    const index = carts.findIndex(cart => cart.id === id);
+  deleteCart(id) {
+    const carts = this.readCartsFile();
+    const index = carts.findIndex(cart => cart.id === id.toString());
     if (index === -1) {
       throw new Error('Cart not found');
     }
-    carts = carts.filter(cart => cart.id !== id);
+    carts.splice(index, 1);
     this.writeCartsFile(carts);
-    return true;
   }
 }
 

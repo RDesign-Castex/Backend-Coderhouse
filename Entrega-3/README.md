@@ -1,37 +1,65 @@
-# Servidor Express
+# Servidor Express - Ejemplo de README
 
-Este proyecto implementa un servidor Express que permite gestionar productos y carritos.
+Este repositorio contiene un servidor Express que implementa la funcionalidad de manejo de productos y carritos. A continuación se detalla lo realizado hasta el momento y cómo probarlo.
 
-## Cómo levantar el servidor
+## Funcionalidades implementadas
 
-1. Asegúrese de tener instalado Node.js.
-2. Clone este repositorio.
-3. Ejecute `npm install` en la carpeta del repositorio para instalar las dependencias.
-4. Ejecute `node src/server.js` para iniciar el servidor.
-5. El servidor estará ejecutándose en el puerto 3000 (o en el puerto especificado en la variable de entorno PORT).
+- Gestión de productos:
+  - Agregar un nuevo producto
+  - Obtener todos los productos
+  - Obtener un producto por ID
+  - Actualizar un producto
+  - Eliminar un producto
 
-## Cómo usar las rutas
+- Gestión de carritos:
+  - Agregar un nuevo carrito
+  - Obtener todos los carritos
+  - Obtener un carrito por ID
+  - Actualizar un carrito
+  - Eliminar un carrito
+  - Agregar un producto a un carrito
 
-### Productos
+## Requisitos previos
 
-- GET /api/products: Devuelve todos los productos. Se puede utilizar el parámetro `?limit=` para limitar la cantidad de resultados.
-- GET /api/products/:pid: Devuelve el producto con el ID especificado.
+- Node.js (v12 o superior)
+- NPM (viene incluido con Node.js)
 
-### Carritos
+## Instalación
 
-- GET /api/carts: Devuelve todos los carritos.
-- GET /api/carts/:cid: Devuelve el carrito con el ID especificado.
+1. Clona este repositorio en tu máquina local.
+2. Abre una terminal en el directorio raíz del proyecto.
+3. Ejecuta el siguiente comando para instalar las dependencias:
 
-### Para probar este codigo puedes usar "curl"
+```bash
+npm install
 
-Obtener todos los productos:
+## Inicia el servidor
+1. node src/server.js
 
-- curl http://localhost:3000/api/products
-  Obtener productos con límite (por ejemplo, límite de 5):
-- curl http://localhost:3000/api/products?limit=5
-  Obtener un producto específico por ID (por ejemplo, ID 3):
-- curl http://localhost:3000/api/products/3
-  Obtener todos los carritos:
-- curl http://localhost:3000/api/carts
-  Obtener un carrito específico por ID (por ejemplo, ID 2):
-- curl http://localhost:3000/api/carts/2
+## Obtener todos los productos:
+curl http://localhost:3000/api/products
+
+## Obtener un producto por ID:
+curl http://localhost:3000/api/products/:id
+
+## Agregar un nuevo producto:
+curl -X POST -H "Content-Type: application/json" -d '{"title":"Nuevo producto", "description":"Descripción del producto", "price": 19.99, "thumbnail": "imagen.png", "code": "ABC123", "stock": 10}' http://localhost:3000/api/products
+
+## Actualizar un producto por ID:
+curl -X PUT -H "Content-Type: application/json" -d '{"title":"Nuevo título", "description":"Nueva descripción"}' http://localhost:3000/api/products/:id
+
+## Eliminar un producto por ID:
+curl -X DELETE http://localhost:3000/api/products/:id
+
+## Agregar un producto a un carrito:
+curl -X POST -H "Content-Type: application/json" -d '{"productId":"123"}' http://localhost:3000/api/carts/:cartId/products
+
+## Obtener un carrito por ID:
+curl http://localhost:3000/api/carts/:id
+
+## Eliminar un producto de un carrito:
+curl -X DELETE http://localhost:3000/api/carts/:cartId/products/:productId
+
+
+
+
