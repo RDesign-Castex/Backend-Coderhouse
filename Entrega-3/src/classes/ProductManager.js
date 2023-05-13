@@ -1,61 +1,81 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
 class ProductManager {
-  constructor() {
-    this.patch = './data/data.json';
-    this.products = [];
-  }
-  static id = 0;
-
-  async addProduct(title, description, price, thumbnails, code, stock) {
-    ProductManager.id++;
-    let newProduct = {
-      title,
-      description,
-      price,
-      thumbnails,
-      code,
-      stock,
-      id: ProductManager.id,
-    };
-
-    this.products.push(newProduct);
-    await fs.writeFile(this.patch, JSON.stringify(this.products));
+  constructor(path) {
+    this.path = path;
   }
 
-  async getProducts() {
-    let respuesta = await fs.readFile(this.patch, 'utf-8');
-    return console.log(JSON.parse(respuesta));
-  }
-
-  async getProductById(id) {
-    let respuesta = await fs.readFile(this.patch, 'utf-8');
-    const products = JSON.parse(respuesta);
-    const productFound = products.find((product) => product.id === id);
-  
-    if (!productFound) {
-      return { success: false, response: {} };
-    } else {
-      return { success: true, response: productFound };
+  readProductsFile() {
+    try {
+      return JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+    } catch (err) {
+      throw new Error('Error reading the file');
     }
   }
 
-  async deleteProduct(id) {
-    let respuesta = await fs.readFile(this.patch, 'utf-8');
-    const products = JSON.parse(respuesta);
-    const updatedProducts = products.filter((product) => product.id !== id);
-
-    await fs.writeFile(this.patch, JSON.stringify(updatedProducts));
-    console.log('Producto eliminado');
+  writeProductsFile(data) {
+    try {
+      fs.writeFileSync(this.path, JSON.stringify(data, null, 2));
+    } catch (err) {
+      throw new Error('Error writing to the file');
+    }
   }
 
-  async updateProducts({ id, ...producto }) {
-    await this.deleteProduct(id);
-    let respuesta = await fs.readFile(this.patch, 'utf-8');
-    const products = JSON.parse(respuesta);
-    const updatedProducts = [{ ...producto, id }, ...products];
+  getNextId(products) {
+    return products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+  }
 
-    await fs.writeFile(this.patch, JSON.stringify(updatedProducts));
+  validateProduct(product) {
+    // You should add your own validation logic here
+    if (!product) {
+      throw new Error('Invalid product data');
+    }
+  }
+
+  addProduct(product) {
+    this.validateProduct(product);
+    const products = this.readProductsFile();
+    product.id = this.getNextId(products);
+    products.push(product);
+    this.writeProductsFile(products);
+    return product;
+  }
+
+  getProducts() {
+    return this.readProductsFile();
+  }
+
+  getProductById(id) {
+    const products = this.readProductsFile();
+    const product = products.find(product => product.id === id);
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    return product;
+  }
+
+  updateProduct(id, updatedProduct) {
+    this.validateProduct(updatedProduct);
+    let products = this.readProductsFile();
+    const index = products.findIndex(product => product.id === id);
+    if (index === -1) {
+      throw new Error('Product not found');
+    }
+    updatedProduct.id = id;
+    products[index] = updatedProduct;
+    this.writeProductsFile(products);
+    return updatedProduct;
+  }
+
+  deleteProduct(id) {
+    let products = this.readProductsFile();
+    const index = products.findIndex(product => product.id === id);
+    if (index === -1) {
+      throw new Error('Product not found');
+    }
+    products = products.filter(product => product.id !== id);
+    this.writeProductsFile(products);
+    return true;
   }
 }
 

@@ -1,51 +1,68 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
 class CartManager {
   constructor(path) {
     this.path = path;
   }
 
-  async addCart() {
+  readCartsFile() {
     try {
-      const data = await fs.readFile(this.path, 'utf-8');
-      const carts = JSON.parse(data);
-      const id = carts.length + 1;
-      const newCart = {
-        id,
-        products: [],
-      };
-
-      carts.push(newCart);
-      await fs.writeFile(this.path, JSON.stringify(carts));
-      return id;
-    } catch (error) {
-      console.error(error);
-      return 'addCart: error';
+      return JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+    } catch (err) {
+      throw new Error('Error reading the file');
     }
   }
 
-  async getCarts() {
+  writeCartsFile(data) {
     try {
-      const data = await fs.readFile(this.path, 'utf-8');
-      const carts = JSON.parse(data);
-      return carts.length ? carts : 'Not found';
-    } catch (error) {
-      console.error(error);
-      return 'getCarts: error';
+      fs.writeFileSync(this.path, JSON.stringify(data, null, 2));
+    } catch (err) {
+      throw new Error('Error writing to the file');
     }
   }
 
-  async getCartById(cid) {
-    try {
-      const data = await fs.readFile(this.path, 'utf-8');
-      const carts = JSON.parse(data);
-      const cart = carts.find((c) => c.id === cid);
-      return cart ? cart : 'Not found';
-		} catch (error) {
-		console.error(error);
-		return 'getCartById: error';
-		}
-		}
-		}
-		
-		module.exports = CartManager;
+  validateCart(cart) {
+    // Add your own validation logic here
+    if (!cart) {
+      throw new Error('Invalid cart data');
+    }
+  }
+
+  addToCart(cart) {
+    this.validateCart(cart);
+    const carts = this.readCartsFile();
+    carts.push(cart);
+    this.writeCartsFile(carts);
+    return cart;
+  }
+
+  getCarts() {
+    return this.readCartsFile();
+  }
+
+  updateCart(id, updatedCart) {
+    this.validateCart(updatedCart);
+    let carts = this.readCartsFile();
+    const index = carts.findIndex(cart => cart.id === id);
+    if (index === -1) {
+      throw new Error('Cart not found');
+    }
+    updatedCart.id = id;
+    carts[index] = updatedCart;
+    this.writeCartsFile(carts);
+    return updatedCart;
+  }
+
+  deleteFromCart(id) {
+    let carts = this.readCartsFile();
+    const index = carts.findIndex(cart => cart.id === id);
+    if (index === -1) {
+      throw new Error('Cart not found');
+    }
+    carts = carts.filter(cart => cart.id !== id);
+    this.writeCartsFile(carts);
+    return true;
+  }
+}
+
+module.exports = CartManager;

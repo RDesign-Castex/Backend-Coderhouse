@@ -1,14 +1,11 @@
-const express = require('express');
-const productRoutes = require('./routes/products');
-const cartRoutes = require('./routes/carts');
+const app = require("./app");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(productRoutes);
-app.use(cartRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app
+  .listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  })
+  .on("error", (err) => {
+    console.log("Error starting server: ", err.message);
+  });

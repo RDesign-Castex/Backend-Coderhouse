@@ -1,22 +1,64 @@
-const express = require("express");
-const ProductManager = require("../classes/ProductManager");
+const express = require('express');
 const router = express.Router();
-const productManager = new ProductManager();
+const ProductManager = require('../classes/ProductManager');
 
-// Endpoint para obtener todos los productos o una cantidad limitada de productos
-router.get("/api/products", async (req, res) => {
-  const limit = req.query.limit ? parseInt(req.query.limit) : null;
-  const products = await productManager.getProducts(limit);
-  res.json(products);
+const productManager = new ProductManager('./data/products.json');
+
+// GET all products
+router.get('/', (req, res) => {
+  try {
+    const products = productManager.getProducts();
+    res.json(products);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 });
 
-// Endpoint para obtener un producto específico por IDnpm
-router.get("/api/products/:pid", async (req, res) => {
-  const pid = parseInt(req.params.pid);
-  const product = await productManager.getProductById(pid);
-  res.json(product);
+// GET a product by id
+router.get('/:id', (req, res) => {
+  try {
+    const product = productManager.getProductById(parseInt(req.params.id));
+    res.json(product);
+  } catch (err) {
+    res.status(404).send({ message: err.message });
+  }
 });
 
-// Añadir más endpoints según sea necesario, por ejemplo, para agregar, actualizar o eliminar productos.
+// POST a new product
+router.post('/', (req, res) => {
+  try {
+    const product = productManager.addProduct(req.body);
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).send
+    // POST a new product
+    router.post('/', (req, res) => {
+      try {
+        const product = productManager.addProduct(req.body);
+        res.status(201).json(product);
+      } catch (err) {
+        res.status(400).send({ message: err.message });
+      }
+    });
 
-module.exports = router;
+    // PUT - update a product
+    router.put('/:id', (req, res) => {
+      try {
+        const updatedProduct = productManager.updateProduct(parseInt(req.params.id), req.body);
+        res.json(updatedProduct);
+      } catch (err) {
+        res.status(400).send({ message: err.message });
+      }
+    });
+
+    // DELETE a product
+    router.delete('/:id', (req, res) => {
+      try {
+        productManager.deleteProduct(parseInt(req.params.id));
+        res.status(204).send();
+      } catch (err) {
+        res.status(404).send({ message: err.message });
+      }
+    });
+
+    module.exports = router;
