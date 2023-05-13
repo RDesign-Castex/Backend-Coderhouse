@@ -60,6 +60,14 @@ curl http://localhost:3000/api/carts/:id
 ## Eliminar un producto de un carrito:
 curl -X DELETE http://localhost:3000/api/carts/:cartId/products/:productId
 
+## se probo en  puerto 8080 
+http://localhost:8080/products
+
+http://localhost:8080/products?limit=5
+
+http://localhost:8080/products/2
+
+http://localhost:8080/products/34123123
 
 
 
