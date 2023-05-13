@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Product rene3",
+    "description": "Description of Product 3",
+    "price": 300,
+    "thumbnail": "/path/to/image3.jpg",
+    "code": "prod3",
+    "stock": 30,
+    "id": 2
+  },
+  {
+    "title": "Product rene4",
+    "description": "Description of Product 4",
+    "price": 400,
+    "thumbnail": "/path/to/image4.jpg",
+    "code": "prod4",
+    "stock": 40,
+    "id": 3
+  },
+  {
+    "title": "Product rene5",
+    "description": "Description of Product 5",
+    "price": 500,
+    "thumbnail": "/path/to/image5.jpg",
+    "code": "prod5",
+    "stock": 50,
+    "id": 4
+  },
+  {
+    "title": "Product rene6",
+    "description": "Description of Product 6",
+    "price": 600,
+    "thumbnail": "/path/to/image6.jpg",
+    "code": "prod6",
+    "stock": 60,
+    "id": 5
+  },
+  {
+    "title": "Product rene7",
+    "description": "Description of Product 7",
+    "price": 700,
+    "thumbnail": "/path/to/image7.jpg",
+    "code": "prod7",
+    "stock": 70,
+    "id": 6
+  },
+  {
+    "title": "Product rene8",
+    "description": "Description of Product 8",
+    "price": 800,
+    "thumbnail": "/path/to/image8.jpg",
+    "code": "prod8",
+    "stock": 80,
+    "id": 7
+  },
+  {
+    "title": "Product rene9",
+    "description": "Description of Product 9",
+    "price": 900,
+    "thumbnail": "/path/to/image9.jpg",
+    "code": "prod9",
+    "stock": 90,
+    "id": 8
+  },
+  {
+    "title": "Product rene10",
+    "description": "Description of Product 10",
+    "price": 1000,
+    "thumbnail": "/path/to/image10.jpg",
+    "code": "prod10",
+    "stock": 100,
+    "id": 9
+  }
+]
