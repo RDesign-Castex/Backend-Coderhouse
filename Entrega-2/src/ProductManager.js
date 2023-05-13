@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require("fs").promises;
 
 class ProductManager {
   constructor(filePath) {
@@ -10,36 +10,47 @@ class ProductManager {
 
   async init() {
     try {
-      const data = await fs.readFile(this.path);
-      this.products = JSON.parse(data);
-      this.currentId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
+      const data = await fs.readFile(this.path, "utf-8");
+      this.products = data ? JSON.parse(data) : [];
+      this.currentId =
+        this.products.length > 0
+          ? this.products[this.products.length - 1].id
+          : 0;
     } catch (error) {
-      console.error('Error loading products:', error);
+      if (error.code === "ENOENT") {
+        // El archivo no existe, inicializar con un array vacío
+        this.products = [];
+      } else {
+        console.error("Error loading products:", error);
+      }
     }
   }
 
   async writeToFile() {
     try {
-      await fs.writeFile(this.path, JSON.stringify(this.products, null, 2));
+      await fs.writeFile(this.path, JSON.stringify(this.products, null, 2), {
+        flag: "w",
+      });
     } catch (error) {
-      console.error('Error writing to file:', error);
+      console.error("Error writing to file:", error);
     }
   }
 
   async addProduct(product) {
     product.id = ++this.currentId;
+    product.stock = product.stock || 0; // Si el stock no se proporciona, se establece en 0
     this.products.push(product);
     await this.writeToFile();
     return product;
   }
 
   getProductById(id) {
-    return this.products.find(product => product.id === id);
+    return this.products.find((product) => product.id === id);
   }
 
   async updateProduct(id, updatedProduct) {
     const product = this.getProductById(id);
-    if (!product) return null;
+    if (!product) return "updateProduct: error"; // Devuelve un mensaje de error si el producto no se encuentra
 
     Object.assign(product, updatedProduct);
     await this.writeToFile();
@@ -47,12 +58,12 @@ class ProductManager {
   }
 
   async deleteProduct(id) {
-    const index = this.products.findIndex(product => product.id === id);
-    if (index === -1) return false;
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index === -1) return "deleteProduct: error"; // Devuelve un mensaje de error si el producto no se encuentra
 
-    this.products.splice(index, 1);
+    const deletedProduct = this.products.splice(index, 1)[0];
     await this.writeToFile();
-    return true;
+    return deletedProduct; // Retorna el producto eliminado
   }
 }
 

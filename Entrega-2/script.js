@@ -1,32 +1,48 @@
-const ProductManager = require('./src/ProductManager');
+const ProductManager = require("./src/ProductManager");
 
-async function manageProducts() {
-  const productManager = new ProductManager('./data/data.json');
+(async () => {
+  const productManager = new ProductManager("./data/data.json");
 
-  // Add a product
-  const newProduct = await productManager.addProduct({
-    title: 'Product 1',
-    description: 'Description of Product 1',
-    price: 100,
-    thumbnail: '/path/to/image.jpg',
-    code: 'prod1',
-    stock: 10,
-  });
-  console.log(newProduct);
+  // Add 10 products
+  for (let i = 1; i <= 10; i++) {
+    try {
+      const newProduct = await productManager.addProduct({
+        title: `Product rene${i}`,
+        description: `Description of Product ${i}`,
+        price: 100 * i,
+        thumbnail: `/path/to/image${i}.jpg`,
+        code: `prod${i}`,
+        stock: 10 * i,
+      });
+      console.log(newProduct);
+    } catch (error) {
+      console.error("addProduct: error");
+    }
+  }
 
   // Get a product by ID
-  const product = productManager.getProductById(newProduct.id);
-  console.log(product);
+  try {
+    const product = productManager.getProductById(1);
+    console.log(product);
+  } catch (error) {
+    console.error("getProductById: error");
+  }
 
   // Update a product
-  const updatedProduct = await productManager.updateProduct(newProduct.id, {
-    title: 'Updated Product 1',
-  });
-  console.log(updatedProduct);
+  try {
+    const updatedProduct = await productManager.updateProduct(1, {
+      title: "Updated Product 1",
+    });
+    console.log(updatedProduct);
+  } catch (error) {
+    console.error("updateProduct: error");
+  }
 
   // Delete a product
-  const isDeleted = await productManager.deleteProduct(newProduct.id);
-  console.log(isDeleted);
-}
-
-manageProducts();
+  try {
+    const isDeleted = await productManager.deleteProduct(1);
+    console.log(isDeleted);
+  } catch (error) {
+    console.error("deleteProduct: error");
+  }
+})();
