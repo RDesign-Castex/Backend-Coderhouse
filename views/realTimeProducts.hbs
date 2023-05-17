@@ -1,73 +1,44 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Lista de Productos en Tiempo Real</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-time Products</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/black-dashboard@1.0.0-alpha3/css/black-dashboard.css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="../public/assets/css/black-dashboard.css">
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="sidebar">
-        <!-- Sidebar content here -->
-      </div>
-      <div class="main-panel">
-        <div class="content">
-          <h1 class="title">Lista de Productos en Tiempo Real</h1>
-          <ul id="productList" class="product-list"></ul>
-          <form id="productForm" class="product-form">
-            <input
-              type="text"
-              name="name"
-              placeholder="Nombre del Producto"
-              class="form-control"
-            />
-            <button type="submit" class="btn btn-primary">Agregar Producto</button>
-          </form>
-        </div>
-        <footer class="footer">
-          <!-- Footer content here -->
-        </footer>
-      </div>
-    </div>
-
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io();
-
-      // Actualizar la lista de productos en la vista en tiempo real
-      socket.on('updateProducts', (products) => {
-        const productList = document.getElementById("productList");
-        productList.innerHTML = "";
-
-        products.forEach((product) => {
-          const listItem = document.createElement("li");
-          listItem.textContent = `${product.name} - ${product.price}`;
-          productList.appendChild(listItem);
-        });
-      });
-
-      const productForm = document.getElementById("productForm");
-      productForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const productName = document.querySelector('input[name="name"]').value;
-        socket.emit("addProduct", productName);
-        productForm.reset();
-      });
-
-      // Establecer conexión con el servidor WebSocket
-      const socket = io();
-
-      // Solicitar la lista de productos al servidor
-      socket.emit("getProducts");
-
-      // Recibir la lista de productos del servidor
-      socket.on("products", (products) => {
-        console.log(products);
-      });
+      const socket = io(); // Conectar al servidor de Socket.IO // Actualizar la
+      lista de productos cuando se reciba la información del servidor
+      socket.on("products", (products) => { const productsList =
+      document.getElementById("productsList"); productsList.innerHTML = ""; //
+      Limpiar la lista de productos products.forEach((product) => { const
+      listItem = document.createElement("li");
+      listItem.classList.add("list-group-item"); listItem.textContent =
+      `${product.title} - ${product.description}`;
+      productsList.appendChild(listItem); }); });
     </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5 mb-4 text-center ">Real-time Products</h1>
+      <ul id="productsList" class="list-group list-unstyled text-center">
+        <li class="list-group-item">
+          {{#each products}}
+            <li>{{title}} - {{description}}</li>
+          {{/each}}
+        </li>
+      </ul>
+      <!-- Aquí se mostrarán los productos en tiempo real -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    ></script>
   </body>
 </html>

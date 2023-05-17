@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/realtimeproducts", (req, res) => {
-  const products = readJsonFile(path.join(__dirname, "../data/products.json"));
+  const products = readJsonFile(path.join(__dirname, "/data/products.json"));
   res.render("realTimeProducts", { products });
 });
 router.get("/load-product", (req, res) => {

@@ -1,116 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Load Products</title>
-  <!-- Estilos de Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Estilos del Black Dashboard -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/black-dashboard@1.0.1/assets/css/black-dashboard.min.css">
-</head>
-
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 mx-auto mt-5">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title">Load Products</h4>
-          </div>
-          <div class="card-body">
-            <form id="productForm">
-              <div class="form-group">
-                <label for="id">ID</label>
-                <input type="text" class="form-control" id="id" value="{{id}}">
-              </div>
-              <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" value="{{title}}">
-              </div>
-              <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" value="{{description}}">
-              </div>
-              <div class="form-group">
-                <label for="code">Code</label>
-                <input type="text" class="form-control" id="code" value="{{code}}">
-              </div>
-              <div class="form-group">
-                <label for="price">Price</label>
-                <input type="text" class="form-control" id="price" value="{{price}}">
-              </div>
-              <div class="form-group">
-                <label for="status">Status</label>
-                <select class="form-control" id="status">
-                  <option value="true" {{#if status}}selected{{/if}}>Active</option>
-                  <option value="false" {{#unless status}}selected{{/unless}}>Inactive</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="stock">Stock</label>
-                <input type="text" class="form-control" id="stock" value="{{stock}}">
-              </div>
-              <div class="form-group">
-                <label for="category">Category</label>
-                <input type="text" class="form-control" id="category" value="{{category}}">
-              </div>
-              <div class="form-group">
-                <label for="thumbnail">Thumbnail</label>
-                <input type="text" class="form-control" id="thumbnail" value="{{thumbnail}}">
-              </div>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </form>
-          </div>
+<html>
+  <head>
+    <title>Cargar Producto</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cargar Producto</h1>
+      <form id="productForm">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            required
+            value="Producto de ejemplo"
+          />
         </div>
-      </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            required
+            value="Descripción del producto de ejemplo"
+          />
+        </div>
+        <div class="form-group">
+          <label for="code">Código</label>
+          <input
+            type="text"
+            class="form-control"
+            id="code"
+            name="code"
+            required
+            value="123456"
+          />
+        </div>
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            name="price"
+            required
+            value="9.99"
+          />
+        </div>
+        <div class="form-group">
+          <label for="status">Estado</label>
+          <select class="form-control" id="status" name="status" required>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="text"
+            class="form-control"
+            id="stock"
+            name="stock"
+            required
+            value="10"
+          />
+        </div>
+        <div class="form-group">
+          <label for="category">Categoría</label>
+          <input
+            type="text"
+            class="form-control"
+            id="category"
+            name="category"
+            required
+            value="Electrónica"
+          />
+        </div>
+        <div class="form-group">
+          <label for="thumbnail">Imágenes</label>
+          <input
+            type="text"
+            class="form-control"
+            id="thumbnail"
+            name="thumbnail"
+            required
+            value="https://example.com/producto.jpg"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
     </div>
-  </div>
 
-  <!-- Scripts de Bootstrap y Black Dashboard -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></
-	script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Obtener los valores del formulario
-      var id = $("#id").val();
-      var title = $("#title").val();
-      var description = $("#description").val();
-      var code = $("#code").val();
-      var price = $("#price").val();
-      var status = $("#status").val();
-      var stock = $("#stock").val();
-      var category = $("#category").val();
-      var thumbnail = $("#thumbnail").val();
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    ></script>
+    <script>
+      $(document).ready(function () { $("#productForm").submit(function (event)
+      { event.preventDefault(); var formData = $(this).serialize(); $.ajax({
+      url: "/api/products", type: "POST", data: formData, success: function
+      (data) { console.log("Product saved successfully");
+      $("#productForm")[0].reset(); }, error: function (error) {
+      console.log("Error saving product"); }, }); }); });
+    </script>
 
-      // Función para guardar el producto
-      function saveProduct() {
-        var product = {
-          id: id,
-          title: title,
-          description: description,
-          code: code,
-          price: price,
-          status: status,
-          stock: stock,
-          category: category,
-          thumbnail: [thumbnail]
-        };
-
-        // Realizar la lógica de guardar el producto aquí
-        $.ajax({
-          url: "/api/products",
-          type: "POST",
-          data: JSON.stringify(product),
-          contentType: "application/json",
-          success: function(data) {
-            console.log("Product saved successfully");
-          },
-          error: function(error) {
-            console.log("Error saving product");
-          }
-        });
-      }
+  </body>
+</html>

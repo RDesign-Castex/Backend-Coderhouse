@@ -3,12 +3,7 @@ const exphbs = require("express-handlebars");
 const http = require("http");
 const socketIO = require("socket.io");
 const path = require("path");
-const { readJsonFile } = require("./utils/fileManager");
-
-const productsRouter = require("./api/products");
-const cartsRouter = require("./api/carts");
-const errorHandler = require("./middleware/errorHandler");
-const viewsRouter = require("./api/views");
+const fs = require("fs");
 
 const app = express();
 const server = http.createServer(app);
@@ -16,21 +11,21 @@ const io = socketIO(server);
 
 // Configuración de Express
 app.use(express.json());
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-app.use(viewsRouter);
-app.use(errorHandler);
-app.use(express.static(path.join(__dirname, "public"))); // Se agrega el middleware para servir archivos estáticos
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Configuración de Handlebars
-app.engine(".hbs", exphbs({ extname: ".hbs" }));
-app.set("view engine", ".hbs");
+app.engine(
+  "hbs",
+  exphbs({
+    extname: ".hbs",
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "views/layouts"),
+    partialsDir: path.join(__dirname, "views/partials"),
+  })
+);
+app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
-
-// Ruta raíz para mostrar la vista index.handlebars
-app.get("/", (req, res) => {
-  res.render("index");
-});
 
 // Ruta para cargar la página load-product
 app.get("/load-product", (req, res) => {
@@ -39,22 +34,85 @@ app.get("/load-product", (req, res) => {
 
 // Ruta para mostrar la lista de productos
 app.get("/products", (req, res) => {
-  const products = readJsonFile(path.join(__dirname, "/data/products.json")); // Leer el contenido de products.json
-
+  const productsFilePath = path.join(__dirname, "data/products.json");
+  const products = readJsonFile(productsFilePath);
   res.render("products", { products });
+});
+
+// Ruta para mostrar la lista de productos en tiempo real
+app.get("/realtimeproducts", (req, res) => {
+  const productsFilePath = path.join(__dirname, "data/products.json");
+  const products = readJsonFile(productsFilePath);
+  res.render("realtimeproducts", { products });
+});
+
+// Ruta para guardar un nuevo producto
+app.post("/api/products", (req, res) => {
+  const newProduct = req.body;
+  const productsFilePath = path.join(__dirname, "data/products.json");
+  const products = readJsonFile(productsFilePath);
+
+  // Generar un nuevo ID para el producto
+  const maxId = products.reduce((max, product) => {
+    return product.id > max ? product.id : max;
+  }, 0);
+  newProduct.id = maxId + 1;
+
+  // Agregar el nuevo producto a la lista
+  products.push(newProduct);
+
+  // Guardar la lista actualizada en el archivo products.json
+  writeJsonFile(productsFilePath, products)
+    .then(() => {
+      // Enviar una respuesta de éxito
+      res
+        .status(201)
+        .json({ message: "Product saved successfully", product: newProduct });
+    })
+    .catch((error) => {
+      console.error(`Error writing JSON file: ${productsFilePath}`);
+      res.status(500).json({ message: "Internal Server Error" });
+    });
 });
 
 // Configuración de Socket.IO
 io.on("connection", (socket) => {
   console.log("Cliente conectado");
 
-  // Enviar mensaje de conexión exitosa al cliente
-  socket.emit("connected", "Conexión exitosa");
+  // Enviar lista de productos al cliente
+  const productsFilePath = path.join(__dirname, "data/products.json");
+  const products = readJsonFile(productsFilePath);
+  socket.emit("products", products);
 
-  // Evento de desconexión
-  socket.on("disconnect", () => {
-    console.log("Cliente desconectado");
+  // Escuchar el evento "update" para recibir actualizaciones de productos
+  socket.on("update", () => {
+    const updatedProducts = readJsonFile(productsFilePath);
+    socket.emit("products", updatedProducts);
   });
 });
+
+// Función para leer el archivo JSON
+function readJsonFile(file) {
+  try {
+    const data = fs.readFileSync(file, "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(`Error reading JSON file: ${file}`, error);
+    return [];
+  }
+}
+
+// Función para escribir el archivo JSON
+function writeJsonFile(file, data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, JSON.stringify(data), "utf8", (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
 
 module.exports = app;
