@@ -1,0 +1,23 @@
+# Archivos y directorios generados por Node.js
+node_modules/
+dist/
+
+# Archivos generados por el sistema operativo
+.DS_Store
+
+# Archivos de registro y datos sensibles
+logs/
+*.log
+.env
+
+# Archivos de configuración local
+config.local.js
+
+# Archivos de respaldo y temporales
+*.bak
+*.tmp
+
+# Directorio de almacenamiento de archivos
+uploads/
+
+# Otros archivos y directorios específicos del proyecto
