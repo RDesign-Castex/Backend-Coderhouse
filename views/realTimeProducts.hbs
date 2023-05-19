@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-time Products</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io(); // Conectar al servidor de Socket.IO // Actualizar la
+      lista de productos cuando se reciba la información del servidor
+      socket.on("products", (products) => { const productsList =
+      document.getElementById("productsList"); productsList.innerHTML = ""; //
+      Limpiar la lista de productos products.forEach((product) => { const
+      listItem = document.createElement("li");
+      listItem.classList.add("list-group-item"); listItem.textContent =
+      `${product.title} - ${product.description}`;
+      productsList.appendChild(listItem); }); });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5 mb-4 text-center ">Real-time Products</h1>
+      <ul id="productsList" class="list-group list-unstyled text-center">
+        <li class="list-group-item">
+          {{#each products}}
+            <li>{{title}} - {{description}}</li>
+          {{/each}}
+        </li>
+      </ul>
+      <!-- Aquí se mostrarán los productos en tiempo real -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    ></script>
+  </body>
+</html>
