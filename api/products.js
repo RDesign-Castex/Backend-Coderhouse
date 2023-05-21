@@ -28,16 +28,16 @@ router.get("/:pid", (req, res, next) => {
 
 router.post(
   "/",
-  body("title").notEmpty().withMessage("Title is required"),
-  body("description").notEmpty().withMessage("Description is required"),
-  body("code").notEmpty().withMessage("code is required"),
-  body("price").isNumeric().withMessage("Price must be a number"),
-  body("status").notEmpty().withMessage("status is required"),
-  body("stock").isNumeric().withMessage("Stock must be a number"),
-  body("category").notEmpty().withMessage("category is required"),
-  body("thumbnail").notEmpty().withMessage("thumbnail is required"),
-	
-
+  [
+    body("title").notEmpty().withMessage("Title is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("code").notEmpty().withMessage("code is required"),
+    body("price").isNumeric().withMessage("Price must be a number"),
+    body("status").notEmpty().withMessage("status is required"),
+    body("stock").isNumeric().withMessage("Stock must be a number"),
+    body("category").notEmpty().withMessage("category is required"),
+    body("thumbnail").notEmpty().withMessage("thumbnail is required"),
+  ],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -56,13 +56,15 @@ router.post(
 
 router.put(
   "/:pid",
-  body("title").optional().notEmpty().withMessage("Title is required"),
-  body("description")
-    .optional()
-    .notEmpty()
-    .withMessage("Description is required"),
-  body("price").optional().isNumeric().withMessage("Price must be a number"),
-  body("stock").optional().isNumeric().withMessage("Stock must be a number"),
+  [
+    body("title").optional().notEmpty().withMessage("Title is required"),
+    body("description")
+      .optional()
+      .notEmpty()
+      .withMessage("Description is required"),
+    body("price").optional().isNumeric().withMessage("Price must be a number"),
+    body("stock").optional().isNumeric().withMessage("Stock must be a number"),
+  ],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

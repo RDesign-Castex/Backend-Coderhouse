@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <title>Cargar Producto</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <style>
+      .navbar { background-color: #333; position: fixed; top: 0; width: 100%;
+      z-index: 999; overflow: hidden; } .navbar a { float: left; display: block;
+      color: #f2f2f2; text-align: center; padding: 12px 16px ; text-decoration:
+      none; font-size: 17px; transition: background-color 0.3s ease; } .navbar
+      a:hover { background-color: #ddd; color: black; } .navbar .brand {
+      font-size: 24px; font-weight: bold; } .navbar .brand span { animation:
+      pulse 2s infinite; } .container { margin: 70px; padding: 70px; height:
+      100%; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a class="brand" href="#">Mi <span>Servidor</span></a>
+      <a href="/">Home</a>
+      <a href="/products">Products</a>
+      <a href="/new_product">New Product</a>
+      <a href="/chatbot">Chat</a>
+      <button id="cartButton">Carrito</button>
+    </nav>
+
+    <div class="container">
+      <h1>Cargar Producto</h1>
+      <form id="productForm" method="POST" action="/new_product">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="code">Código</label>
+          <input
+            type="text"
+            class="form-control"
+            id="code"
+            name="code"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            name="price"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="status">Estado</label>
+          <select class="form-control" id="status" name="status" required>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock</label>
+          <input
+            type="text"
+            class="form-control"
+            id="stock"
+            name="stock"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="category">Categoría</label>
+          <input
+            type="text"
+            class="form-control"
+            id="category"
+            name="category"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="thumbnail">Imágenes</label>
+          <input
+            type="text"
+            class="form-control"
+            id="thumbnail"
+            name="thumbnail"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    ></script>
+    <script>
+      $(document).ready(function() { $("#productForm").submit(function(event) {
+      event.preventDefault(); var formData = $(this).serialize(); $.ajax({ url:
+      "/api/products", type: "POST", data: formData, success: function(data) {
+      console.log("Product saved successfully"); $("#productForm")[0].reset();
+      }, error: function(error) { console.log("Error saving product"); }, });
+      }); });
+    </script>
+    <script>
+      document.getElementById("cartButton").addEventListener("click", function()
+      { window.location.href = "/carts"; });
+    </script>
+  </body>
+</html>
