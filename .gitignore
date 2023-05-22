@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos de construcción y distribución
+dist/
+build/
+
+# Archivos de entorno
+.env
+
+# Archivos de configuración de IDE
+.idea/
+.vscode/
+
+# Archivos de registro
+*.log
+
+# Archivos de respaldo
+*~
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
