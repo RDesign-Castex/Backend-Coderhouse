@@ -1,0 +1,45 @@
+
+Guía de Funcionamiento del Servidor
+Iniciar el Servidor
+Para poner en funcionamiento el servidor, ejecuta el siguiente comando:
+
+Copy code
+nodemon server.js
+Funcionalidades del Servidor
+Una vez que el servidor esté en funcionamiento, podrás acceder a varias funcionalidades a través de tu navegador web utilizando las siguientes URLs:
+
+Cargar un Producto
+Para cargar un producto, visita la siguiente URL:
+
+
+Copy code
+http://localhost:8080/new_product
+Ver los Productos
+Para ver los productos, visita la siguiente URL:
+
+
+Copy code
+http://localhost:8080/products
+Acceder al Chatbot
+Para acceder al chatbot, visita la siguiente URL:
+
+
+Copy code
+http://localhost:8080/chatbot
+Ver Productos en Tiempo Real
+Para ver los productos en tiempo real, visita la siguiente URL:
+
+
+Copy code
+http://localhost:8080/realtimeproducts
+Ver Detalles de un Producto Específico
+Para ver los detalles de un producto específico, reemplaza :pid con el ID del producto en la siguiente URL:
+
+
+Copy code
+http://localhost:8080/products/:pid
+Por ejemplo, para ver los detalles del producto con ID 1, usarías la siguiente URL:
+
+
+Copy code
+http://localhost:8080/products/1
