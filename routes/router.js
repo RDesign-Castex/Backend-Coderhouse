@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const utils = require("../utils/index");
+const utils = require("../utils/function");
 const productService = require("../services/productService");
 const chatbotService = require("../services/chatbot");
 const path = require("path");

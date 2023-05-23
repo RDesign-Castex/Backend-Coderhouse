@@ -5,13 +5,13 @@ const exphbs = require("express-handlebars");
 const http = require("http");
 const socketIO = require("socket.io");
 const path = require("path");
-const { body, validationResult } = require("express-validator");
-const axios = require("axios");
-const natural = require("natural");
+//const { body, validationResult } = require("express-validator");
+//const axios = require("axios");
+//const natural = require("natural");
 
-const utils = require('./utils/index'); // Importar el módulo de utilidades
-const routes = require('./routes/index'); // Importar el módulo de rutas
-const chatbot = require('./services/chatbot'); // Importar el módulo de chatbot
+const utils = require("./utils/function"); // Importar el módulo de utilidades
+const routes = require("./routes/router"); // Importar el módulo de rutas
+const chatbot = require("./services/chatbot"); // Importar el módulo de chatbot
 
 const app = express();
 const server = http.createServer(app);

@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const { validationResult } = require("express-validator");
-const utils = require("../utils/index"); // Asegúrate de que la ruta sea correcta
+const utils = require("../utils/function"); // Asegúrate de que la ruta sea correcta
 
 function getProducts() {
   const productsFilePath = path.join(__dirname, "../data/products.json");
