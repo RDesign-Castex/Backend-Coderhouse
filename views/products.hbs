@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>Productos</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <style>
+      .navbar { background-color: #333; position: fixed; top: 0; width: 100%;
+      z-index: 999; overflow: hidden; } .navbar a { float: left; display: block;
+      color: #f2f2f2; text-align: center; padding: 7px 6px; text-decoration:
+      none; font-size: 17px; transition: background-color 0.3s ease; } .navbar
+      a:hover { background-color: #ddd; color: black; } .navbar .brand {
+      font-size: 24px; font-weight: bold; } .navbar .brand span { animation:
+      pulse 2s infinite; } .container{padding: 4rem;} .product-card { width: 18rem; margin-bottom: 1rem; }
+      .product-card .card-body { padding: 1rem; } .product-card img { width:
+      100%; height: 200px; object-fit: cover; } .product-card .card-title {
+      font-weight: bold; } .product-card .card-text { margin-bottom: 0; }
+      .product-card .add-to-cart-btn { width: 100%; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <!-- Aquí va el contenido del navbar -->
+      <a class="brand" href="#">Mi <span>Servidor</span></a>
+      <a href="/products">Products</a>
+      <a href="/new_product">New Product</a>
+      <a href="/chatbot">Chat</a>
+      <button id="cartButton">Carrito</button>
+    </nav>
+
+    <div class="container">
+      <h1>Productos</h1>
+      <div class="row">
+        {{#each products}}
+          <div class="col-sm-4">
+            <div class="card product-card">
+              <img
+                src="{{this.thumbnail}}"
+                alt="Imagen del producto"
+                class="card-img-top"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{this.title}}</h5>
+                <p class="card-text">Descripción: {{this.description}}</p>
+                <p class="card-text">Código: {{this.code}}</p>
+                <p class="card-text">Precio: {{this.price}}</p>
+                <p class="card-text">Estado: {{this.status}}</p>
+                <p class="card-text">Stock: {{this.stock}}</p>
+                <p class="card-text">Categoría: {{this.category}}</p>
+                <button
+                  class="btn btn-primary add-to-cart-btn"
+                  data-id="{{this.id}}"
+                >Agregar al carrito</button>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <script>
+      // Manejar evento de clic en el botón "Agregar al carrito"
+      document.addEventListener("click", function(event) { if
+      (event.target.classList.contains("add-to-cart-btn")) { const productId =
+      event.target.dataset.id; addToCart(productId); } }); // Función para
+      agregar un producto al carrito function addToCart(productId) { // Aquí
+      puedes implementar la lógica para agregar el producto al carrito
+      console.log("Agregado al carrito: " + productId); }
+    </script>
+  </body>
+</html>

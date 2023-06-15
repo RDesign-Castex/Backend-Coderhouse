@@ -1,0 +1,38 @@
+<!-- product-details.hbs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Detalles del Producto</title>
+</head>
+<body>
+  <h1>Detalles del Producto</h1>
+  
+  <div>
+    {{#if product}}
+      <h2>{{product.title}}</h2>
+      <p>{{product.description}}</p>
+      <p>Precio: {{product.price}}</p>
+      <!-- Mostrar más detalles del producto -->
+      
+      <form action="/carts/${cartId}/products/${product.id}" method="POST">
+  <label for="quantity">Cantidad:</label>
+  <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+  <button type="submit">Agregar al Carrito</button>
+</form>
+    {{else}}
+      <p>No se encontró el producto con el ID especificado.</p>
+    {{/if}}
+  </div>
+
+  <script>
+    // Obtener los valores de :cid y :pid de la URL actual
+    const urlParams = new URLSearchParams(window.location.search);
+    const cartId = urlParams.get('cid');
+    const productId = urlParams.get('pid');
+
+    // Actualizar la acción del formulario con los valores de :cid y :pid
+    const addToCartForm = document.getElementById("addToCartForm");
+    addToCartForm.action = `/carts/${cartId}/products/${productId}`;
+  </script>
+</body>
+</html>
