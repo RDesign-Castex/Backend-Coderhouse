@@ -1,0 +1,12 @@
+{
+  "name": "entrega-1",
+  "version": "1.0.0",
+  "description": "[![rdesign.png](https://i.postimg.cc/JnrKqr20/rdesign.png)](https://postimg.cc/bG5QYh8f)",
+  "main": "Entrega-1.js",
+  "scripts": {
+    "start": "node ProductManager.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
